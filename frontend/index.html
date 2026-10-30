@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inventory — Apple Product Studio</title>
+  <!-- Apple Typography (SF Pro Display & SF Pro Text fallback) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- 1. Apple Global Navigation Bar (44px Frosted Glass) -->
+  <header class="apple-nav">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <svg class="apple-logo" viewBox="0 0 170 170" width="16" height="16" fill="currentColor">
+          <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.07-7.85-8.08-12.44-15.03-6.42-9.74-11.45-20.93-15.09-33.56-3.64-12.63-5.46-24.36-5.46-35.18 0-14.56 3.63-26.68 10.89-36.35 7.26-9.67 16.48-14.63 27.67-14.88 4.89 0 10.42 1.34 16.59 4.02 6.17 2.68 10.02 4.08 11.55 4.19 1.32-.11 5.34-1.57 12.06-4.36 6.72-2.79 12.21-4.08 16.47-3.86 12.42.75 22.42 5.35 30 13.8-10.89 6.64-16.22 15.69-16 27.14.22 9.07 3.58 16.71 10.08 22.92 6.5 6.21 14.15 9.77 22.95 10.67-2.24 6.76-4.99 13.79-8.26 21.09zM119.22 31.05c0-7.24 2.63-13.9 7.89-19.98 5.26-6.08 11.75-9.87 19.47-11.37.11 1.07.16 1.93.16 2.57 0 7.13-2.71 13.88-8.13 20.25-5.42 6.37-12.01 10.19-19.77 11.46-.05-.86-.16-1.5-.16-1.93z"/>
+        </svg>
+        <span class="nav-title">Inventory Studio</span>
+      </div>
+      <nav class="nav-links">
+        <a href="#hero" class="nav-link active">Overview</a>
+        <a href="#form-section" class="nav-link">Add Product</a>
+        <a href="#inventory-section" class="nav-link">Catalog</a>
+        <a href="/items" target="_blank" class="nav-link pill-link">REST API &nearr;</a>
+      </nav>
+      <div class="nav-status">
+        <div id="api-status-badge" class="status-pill checking">
+          <span class="status-indicator"></span>
+          <span id="api-status-label">Connecting</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. Hero Section: Product-Tile Whiteout Aesthetic -->
+  <section id="hero" class="apple-hero-panel">
+    <div class="hero-container">
+      <div class="eyebrow-tag">Item Management System</div>
+      <h1 class="headline-hero">
+        Inventory. <span class="headline-accent">Engineered for precision.</span>
+      </h1>
+      <p class="subheadline-hero">
+        A seamless full-stack retail catalog powered by Express in-memory REST architecture.
+      </p>
+      <div class="hero-actions">
+        <a href="#form-section" class="btn-hero-primary" id="hero-create-btn">Add New Item</a>
+        <a href="#inventory-section" class="btn-hero-outline" id="hero-view-btn">View Inventory</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Apple Bento KPI Summary Strip -->
+  <section class="bento-summary-section">
+    <div class="section-container">
+      <div class="bento-grid">
+        <div class="bento-card">
+          <div class="bento-label">Total Inventory</div>
+          <div class="bento-metric" id="kpi-total-items">0</div>
+          <div class="bento-caption">Active items tracked in memory</div>
+        </div>
+        <div class="bento-card">
+          <div class="bento-label">Catalog Value</div>
+          <div class="bento-metric" id="kpi-total-value">$0.00</div>
+          <div class="bento-caption">Cumulative gross price</div>
+        </div>
+        <div class="bento-card">
+          <div class="bento-label">Average Unit Price</div>
+          <div class="bento-metric" id="kpi-avg-price">$0.00</div>
+          <div class="bento-caption">Per product valuation</div>
+        </div>
+        <div class="bento-card">
+          <div class="bento-label">Backend Engine</div>
+          <div class="bento-metric metric-code">Port 5001</div>
+          <div class="bento-caption">Node.js &middot; Express &middot; REST</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Product Input Form (Card Panel) -->
+  <section id="form-section" class="form-section-panel">
+    <div class="section-container">
+      <div class="apple-card form-card">
+        <div class="card-header">
+          <div class="card-eyebrow" id="form-mode-eyebrow">Inventory Entry</div>
+          <h2 class="card-title" id="form-title">Add Item to Catalog</h2>
+          <p class="card-description" id="form-desc">
+            Provide the product name and unit price. All fields are instantly validated and synced.
+          </p>
+        </div>
+
+        <form id="item-form" novalidate>
+          <input type="hidden" id="edit-item-id" value="" />
+
+          <div class="form-grid">
+            <div class="input-field-group">
+              <label for="item-name" class="input-label">Product Name</label>
+              <input
+                type="text"
+                id="item-name"
+                name="name"
+                class="apple-input"
+                placeholder="e.g. Notebook, Mechanical Keyboard"
+                autocomplete="off"
+                required
+              />
+              <span class="field-hint">Enter concise, descriptive naming</span>
+            </div>
+
+            <div class="input-field-group">
+              <label for="item-price" class="input-label">Price ($ USD)</label>
+              <input
+                type="number"
+                id="item-price"
+                name="price"
+                class="apple-input"
+                placeholder="50.00"
+                step="0.01"
+                min="0"
+                required
+              />
+              <span class="field-hint">Standard decimal format without symbols</span>
+            </div>
+          </div>
+
+          <div class="form-button-row">
+            <button type="submit" id="submit-btn" class="btn-apple-primary">
+              <span id="submit-btn-text">Submit</span>
+            </button>
+            <button type="button" id="cancel-btn" class="btn-apple-secondary hidden">
+              Cancel
+            </button>
+            <button type="button" id="reset-btn" class="btn-apple-ghost">
+              Clear Fields
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Current Inventory Table Panel -->
+  <section id="inventory-section" class="inventory-section-panel">
+    <div class="section-container">
+      <div class="apple-card table-card">
+        <div class="table-card-toolbar">
+          <div>
+            <div class="card-eyebrow">Real-Time Data</div>
+            <h2 class="card-title">Current Items</h2>
+          </div>
+          <div class="toolbar-actions">
+            <div class="search-input-wrapper">
+              <input type="text" id="filter-input" class="search-input" placeholder="Search catalog..." />
+            </div>
+            <span id="item-count-badge" class="counter-pill">0 items</span>
+            <button id="refresh-btn" class="btn-apple-icon" title="Reload from server">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <polyline points="1 20 1 14 7 14"></polyline>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+              </svg>
+              <span>Refresh</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="apple-table" id="items-table">
+            <thead>
+              <tr>
+                <th class="col-id">ID</th>
+                <th class="col-name">Name</th>
+                <th class="col-price">Price</th>
+                <th class="col-action">Action</th>
+              </tr>
+            </thead>
+            <tbody id="items-table-body">
+              <!-- Dynamically rendered rows -->
+            </tbody>
+          </table>
+
+          <!-- Empty Inventory State (Figure 1: Starting Phase) -->
+          <div id="empty-state" class="empty-state-panel">
+            <div class="empty-icon-circle">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#86868B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+              </svg>
+            </div>
+            <h3 class="empty-title">Inventory is empty</h3>
+            <p class="empty-description">
+              Get started by adding your first product using the form above.
+            </p>
+            <a href="#form-section" class="empty-action-link">Add item &rarr;</a>
+          </div>
+
+          <!-- Loading Indicator -->
+          <div id="loading-state" class="loading-state-panel hidden">
+            <div class="apple-spinner"></div>
+            <p>Syncing with server...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Apple Minimalist Confirmation Modal -->
+  <div id="delete-modal" class="apple-modal-overlay hidden">
+    <div class="apple-modal-box">
+      <div class="modal-icon-wrap">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E30000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="15" y1="9" x2="9" y2="15"></line>
+          <line x1="9" y1="9" x2="15" y2="15"></line>
+        </svg>
+      </div>
+      <h3 class="modal-title">Delete Product?</h3>
+      <p class="modal-message" id="modal-delete-message">
+        Are you sure you want to delete this product? This action cannot be undone.
+      </p>
+      <div class="modal-actions">
+        <button type="button" id="modal-cancel-btn" class="btn-apple-secondary">Cancel</button>
+        <button type="button" id="modal-confirm-delete-btn" class="btn-apple-destructive">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. Floating Apple Toast System -->
+  <div id="toast-shelf" class="toast-shelf"></div>
+
+  <!-- 8. Apple Minimalist Footer -->
+  <footer class="apple-footer">
+    <div class="footer-container">
+      <div class="footer-divider"></div>
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>Architecture</h4>
+          <p>Express.js REST API on Port 5001</p>
+          <p>In-Memory Collection Storage</p>
+        </div>
+        <div class="footer-col">
+          <h4>Endpoints</h4>
+          <p><code>GET /items</code> &middot; <code>POST /items</code></p>
+          <p><code>PUT /items/:id</code> &middot; <code>DELETE /items/:id</code></p>
+        </div>
+        <div class="footer-col">
+          <h4>Design System</h4>
+          <p>Product-Tile Whiteout Theme</p>
+          <p>SF Pro Typography &middot; #F5F5F7 Off-White</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 MERN Task 1 &middot; Precision Retail Inventory System.</span>
+        <span class="footer-note">Built for optimal responsiveness and speed.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
